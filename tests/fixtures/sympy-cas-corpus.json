@@ -1,0 +1,46 @@
+{
+  "oracle": {
+    "name": "SymPy",
+    "version": "1.12"
+  },
+  "cases": [
+    {
+      "operation": "differentiate",
+      "expression": "(x^2 + 1)*sin(x)",
+      "variable": "x",
+      "expected": "2*x*sin(x) + (x^2 + 1)*cos(x)"
+    },
+    {
+      "operation": "factor",
+      "expression": "x^4 - 5*x^2 + 4",
+      "variable": "x",
+      "expected": "(x - 2)*(x - 1)*(x + 1)*(x + 2)"
+    },
+    {
+      "operation": "integrate",
+      "expression": "2*x*cos(x^2)",
+      "variable": "x",
+      "expected": "sin(x^2)"
+    },
+    {
+      "operation": "simplify",
+      "expression": "(x^2 - 1)/(x - 1)",
+      "expected": "x + 1"
+    },
+    {
+      "operation": "solve",
+      "expression": "x^2 - 2",
+      "variable": "x",
+      "expected": ["-sqrt(2)", "sqrt(2)"]
+    },
+    {
+      "operation": "solve-system",
+      "variables": ["x", "y"],
+      "equations": [["x + y", "3"], ["x^2 + y^2", "5"]],
+      "expected": [
+        { "x": "1", "y": "2" },
+        { "x": "2", "y": "1" }
+      ]
+    }
+  ]
+}

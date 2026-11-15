@@ -1,0 +1,93 @@
+<a class="skip-link" href="#main">Skip to tutorial</a>
+
+<header class="site-header">
+  <a class="brand" href="#main" aria-label="ts-cas home">
+    <span class="brand-mark" aria-hidden="true">∑</span>
+    <span>ts<span class="brand-accent">·</span>cas</span>
+  </a>
+  <div class="site-intro">
+    <h1>Symbolic math, step by step.</h1>
+    <p>
+      Explore exact algebra, calculus, domain-aware operations, and verifiable results
+      with editable examples that run in your browser.
+    </p>
+  </div>
+</header>
+
+<main id="main">
+  <section class="docs-section" id="tutorial" aria-labelledby="tutorial-title">
+    <div class="section-title">
+      <div>
+        <p class="eyebrow">Interactive guide</p>
+        <h2 id="tutorial-title">Learn with executable examples</h2>
+      </div>
+    </div>
+
+    <div class="tutorial-intro">
+      <p>
+        Follow each calculation, edit the TypeScript, and run it against the real
+        <code>ts-cas</code> library. No installation or imports are needed.
+      </p>
+      <aside class="tutorial-sandbox-note">
+        <strong>About the sandbox</strong>
+        <span>
+          The <code>tsCas</code> namespace is available in every cell. Code runs in a
+          Web Worker without DOM or network access and is stopped after 5 seconds.
+          TypeScript is transpiled for execution but is not type-checked.
+        </span>
+      </aside>
+    </div>
+
+    <div class="tutorial-layout">
+      <nav class="tutorial-toc" aria-label="Tutorial sections">
+        <p class="eyebrow">On this page</p>
+        <ul class="tutorial-toc-groups">
+          @for (group of tutorialMenu; track group.title) {
+            <li class="tutorial-toc-group">
+              <a
+                class="tutorial-toc-toggle"
+                [href]="'#' + group.sectionId"
+                [attr.aria-expanded]="openMenuGroup() === group.title"
+                [attr.aria-controls]="'tutorial-toc-' + group.id"
+                (click)="toggleMenuGroup(group.title)"
+              >
+                <span class="tutorial-toc-dash" aria-hidden="true">-</span>
+                <span class="tutorial-toc-title">{{ group.title }}</span>
+                <span class="tutorial-toc-disclosure" aria-hidden="true">
+                  {{ openMenuGroup() === group.title ? "−" : "+" }}
+                </span>
+              </a>
+              <ul
+                class="tutorial-toc-items"
+                [id]="'tutorial-toc-' + group.id"
+                [hidden]="openMenuGroup() !== group.title"
+              >
+                @for (item of group.items; track item.id) {
+                  <li>
+                    <a [href]="'#' + item.id">{{ item.title }}</a>
+                  </li>
+                }
+              </ul>
+            </li>
+          }
+        </ul>
+      </nav>
+
+      <div class="tutorial-article">
+        @for (chapter of tutorialChapters; track chapter.id) {
+          <section class="tutorial-chapter" [id]="chapter.id">
+            <p class="eyebrow">{{ chapter.number }} / Tutorial</p>
+            <h3>{{ chapter.title }}</h3>
+             
+            @for (paragraph of chapter.paragraphs; track $index) {
+              <p class="tutorial-prose">{{ paragraph }}</p>
+            }
+            @for (example of chapter.examples; track example.id) {
+              <app-tutorial-code-cell [id]="'example-' + example.id" [example]="example" />
+            }
+          </section>
+        }
+      </div>
+    </div>
+  </section>
+</main>

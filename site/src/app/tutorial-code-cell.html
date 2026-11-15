@@ -1,0 +1,45 @@
+<article class="tutorial-code-cell">
+  <header class="tutorial-cell-header">
+    <div>
+       
+      <h4>{{ example.title }}</h4>
+      <p class="tutorial-cell-description">{{ example.description }}</p>
+    </div>
+    <span class="cell-language">TypeScript</span>
+  </header>
+
+  <label class="sr-only" [for]="'tutorial-code-' + example.id">
+    Editable code: {{ example.title }}
+  </label>
+  <textarea
+    class="tutorial-code-editor"
+    [id]="'tutorial-code-' + example.id"
+    rows="7"
+    maxlength="10000"
+    spellcheck="false"
+    autocomplete="off"
+    autocapitalize="off"
+    [ngModel]="source()"
+    (ngModelChange)="updateSource($event)"
+    (keydown.control.enter)="run()"
+    (keydown.meta.enter)="run()"
+  ></textarea>
+
+  <div class="tutorial-cell-actions">
+    <span>API available as <code>tsCas</code> · Press Ctrl/⌘ + Enter to run</span>
+    <button type="button" class="tutorial-run-button" [disabled]="running()" (click)="run()">
+      {{ running() ? "Running…" : "Run" }}
+      <span aria-hidden="true">↗</span>
+    </button>
+  </div>
+
+  <div class="tutorial-cell-output" aria-live="polite">
+    @if (errorMessage(); as message) {
+      <p class="tutorial-cell-error" role="alert">{{ message }}</p>
+    } @else if (output(); as result) {
+      <pre><code>{{ result }}</code></pre>
+    } @else {
+      <p>Output will appear here.</p>
+    }
+  </div>
+</article>

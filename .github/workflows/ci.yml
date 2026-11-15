@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [20, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            site/package-lock.json
+      - run: npm ci
+      - run: npm run build
+      - if: matrix.node-version == 22
+        run: npm ci --prefix site
+      - run: npm run test:all
+      - run: npm run validate:domain-helpers
+      - if: matrix.node-version == 22
+        run: npm run test:site
+      - if: matrix.node-version == 22
+        run: npm run build --prefix site
+
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run benchmark
+        env:
+          BENCHMARK_OUTPUT: benchmark-results.json
+          BENCHMARK_ENFORCE: "1"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cas-benchmark-node-22
+          path: benchmark-results.json
+          if-no-files-found: warn
+          retention-days: 30

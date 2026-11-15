@@ -1,0 +1,62 @@
+{
+  "name": "ts-cas",
+  "version": "1.0.0",
+  "description": "A symbolic and numerical computer algebra system for JavaScript and TypeScript",
+  "author": "Rui Costa <rui.fajozes@gmail.com>",
+  "license": "GPL-3.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/primo-malvado/ts-cas.git"
+  },
+  "homepage": "https://github.com/primo-malvado/ts-cas#readme",
+  "bugs": {
+    "url": "https://github.com/primo-malvado/ts-cas/issues"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node scripts/remove-build-source-maps.mjs",
+    "test": "vitest run tests",
+    "test:site": "vitest run site/src/app",
+    "test:oracle": "vitest run tests/sympy-oracle.test.ts",
+    "test:watch": "vitest",
+    "validate:domain-helpers": "npm run build && node scripts/validate-domain-helpers.mjs",
+    "test:all": "npm run build && npm run test",
+    "benchmark": "npm run build && node scripts/benchmarks.mjs",
+    "prepublishOnly": "npm run test:all && node scripts/validate-domain-helpers.mjs"
+  },
+  "keywords": [
+    "computer-algebra",
+    "cas",
+    "symbolic-math",
+    "numerical-analysis",
+    "javascript",
+    "typescript",
+    "calculus",
+    "arbitrary-precision",
+    "interval-arithmetic"
+  ],
+  "devDependencies": {
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  },
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "docs",
+    "LICENSE"
+  ]
+}

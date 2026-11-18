@@ -11,19 +11,31 @@
   <label class="sr-only" [for]="'tutorial-code-' + example.id">
     Editable code: {{ example.title }}
   </label>
-  <textarea
-    class="tutorial-code-editor"
-    [id]="'tutorial-code-' + example.id"
-    rows="7"
-    maxlength="10000"
-    spellcheck="false"
-    autocomplete="off"
-    autocapitalize="off"
-    [ngModel]="source()"
-    (ngModelChange)="updateSource($event)"
-    (keydown.control.enter)="run()"
-    (keydown.meta.enter)="run()"
-  ></textarea>
+  <div class="tutorial-code-editor-shell">
+    <pre
+      #highlight
+      class="tutorial-code-highlight"
+      aria-hidden="true"
+      [innerHTML]="highlightedSource()"
+    ></pre>
+    <textarea
+      #editor
+      class="tutorial-code-editor"
+      [id]="'tutorial-code-' + example.id"
+      rows="7"
+      maxlength="10000"
+      spellcheck="false"
+      autocomplete="off"
+      autocapitalize="off"
+      wrap="off"
+      [ngModel]="source()"
+      (ngModelChange)="updateSource($event)"
+      (scroll)="syncEditorScroll($event, highlight)"
+      (keydown)="insertIndent($event, editor)"
+      (keydown.control.enter)="run()"
+      (keydown.meta.enter)="run()"
+    ></textarea>
+  </div>
 
   <div class="tutorial-cell-actions">
     <span>API available as <code>tsCas</code> · Press Ctrl/⌘ + Enter to run</span>

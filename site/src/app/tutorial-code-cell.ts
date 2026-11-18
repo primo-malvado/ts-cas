@@ -2,6 +2,7 @@ import { Component, Input, OnDestroy, OnInit, signal } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { isTutorialRunnerResponse } from "./tutorial-runner-protocol";
 import { transpileTutorialCode } from "./tutorial-code-transpiler";
+import { highlightTutorialCode } from "./tutorial-code-highlight";
 import type { TutorialCodeExample } from "./tutorial-content";
 
 const RUN_TIMEOUT_MS = 5_000;
@@ -19,6 +20,7 @@ export class TutorialCodeCellComponent implements OnInit, OnDestroy {
   readonly output = signal<string | null>(null);
   readonly errorMessage = signal<string | null>(null);
   readonly running = signal(false);
+  readonly highlightedSource = signal("");
 
   private activeRun: { worker: Worker; timeout: ReturnType<typeof setTimeout> } | null = null;
   private runSequence = 0;
@@ -26,6 +28,7 @@ export class TutorialCodeCellComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.source.set(this.example.code);
+    this.highlightedSource.set(highlightTutorialCode(this.example.code));
   }
 
   ngOnDestroy(): void {
@@ -36,8 +39,35 @@ export class TutorialCodeCellComponent implements OnInit, OnDestroy {
 
   updateSource(source: string): void {
     this.source.set(source);
+    this.highlightedSource.set(highlightTutorialCode(source));
     this.output.set(null);
     this.errorMessage.set(null);
+  }
+
+  syncEditorScroll(
+    event: Event,
+    highlight: HTMLPreElement,
+  ): void {
+    const editor = event.target;
+    if (!(editor instanceof HTMLTextAreaElement)) return;
+    highlight.scrollTop = editor.scrollTop;
+    highlight.scrollLeft = editor.scrollLeft;
+  }
+
+  insertIndent(event: KeyboardEvent, editor: HTMLTextAreaElement): void {
+    if (event.key !== "Tab") return;
+    event.preventDefault();
+
+    const source = this.source();
+    const start = editor.selectionStart;
+    const end = editor.selectionEnd;
+    const updated = `${source.slice(0, start)}  ${source.slice(end)}`;
+    this.updateSource(updated);
+
+    queueMicrotask(() => {
+      editor.selectionStart = start + 2;
+      editor.selectionEnd = start + 2;
+    });
   }
 
   async run(): Promise<void> {

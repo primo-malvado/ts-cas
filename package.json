@@ -1,9 +1,9 @@
 {
   "name": "ts-cas",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A symbolic and numerical computer algebra system for JavaScript and TypeScript",
   "author": "Rui Costa <rui.fajozes@gmail.com>",
-  "license": "GPL-3.0-or-later",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/primo-malvado/ts-cas.git"
@@ -21,7 +21,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc -p tsconfig.json && node scripts/remove-build-source-maps.mjs",
-    "test": "vitest run tests",
+    "test": "vitest run --dir tests",
     "test:site": "vitest run site/src/app",
     "test:oracle": "vitest run tests/sympy-oracle.test.ts",
     "test:watch": "vitest",
@@ -51,6 +51,10 @@
     ".": {
       "types": "./dist/src/index.d.ts",
       "import": "./dist/src/index.js"
+    },
+    "./core": {
+      "types": "./dist/src/core-api.d.ts",
+      "import": "./dist/src/core-api.js"
     }
   },
   "files": [

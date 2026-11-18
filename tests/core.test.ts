@@ -1,5 +1,25 @@
 import { describe, expect, it } from "vitest";
 import { differentiate, equals, expand, parse, simplify, toString } from "../src/index.js";
+import * as coreApi from "../src/core-api.js";
+
+describe("core API stability", () => {
+  it("exports the frozen entry surface", () => {
+    expect(Object.keys(coreApi).sort()).toEqual([
+      "differentiate",
+      "evaluate",
+      "expand",
+      "factor",
+      "factorPolynomial",
+      "integrate",
+      "parse",
+      "simplify",
+      "solve",
+      "solveEquation",
+      "substitute",
+      "toString",
+    ]);
+  });
+});
 
 describe("parser", () => {
   it("parses implicit multiplication", () => {

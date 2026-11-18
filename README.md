@@ -6,6 +6,26 @@ symbolic mathematics with configurable-precision numerical computation.
 Parse expressions, simplify and transform them, solve supported equations, and
 differentiate or integrate—all from a small, dependency-free library.
 
+## Start in 5 minutes
+```bash
+npm install ts-cas
+```
+
+```js
+import { differentiate, parse, simplify, toString } from "ts-cas";
+
+const expression = parse("2*x + 3*x");
+console.log(toString(simplify(expression))); // 5*x
+
+const derivative = differentiate(parse("sin(x^2)"), "x");
+console.log(toString(derivative)); // 2*x*cos(x^2)
+```
+
+In the browser, the 
+[interactive page](https://primo-malvado.github.io/ts-cas/)
+ includes an executable tutorial: edit the TypeScript code and run it in a secure worker,
+ without installing any dependencies.
+
 ## Features
 
 - Exact integer and rational arithmetic in symbolic expressions
@@ -17,12 +37,16 @@ differentiate or integrate—all from a small, dependency-free library.
 - Certified real-root isolation and real-domain analysis for supported inputs
 - Matrices, statistics, probability, and function sampling
 
+For a stable, compatibility-tested integration surface, use the
+[`ts-cas/core`](./docs/API_STABILITY.md) subpath. The broader top-level API
+may receive additive exports before the core API changes its promised contract.
+
 The project is written in TypeScript and ships an ESM API that JavaScript
 applications can import. Operations document their supported mathematical
 domains and report unsupported or partial cases rather than claiming a general
 solution when one is not available.
 
-## Quick start
+## More installation options
 
 Install the published package:
 
@@ -557,11 +581,4 @@ A substituição não avalia funções como `sin` ou `log` em geral; apenas subs
 
 Copyright (C) 2026 Rui Costa.
 
-This program is free software: you can redistribute it and/or modify it under
-the terms of the GNU General Public License as published by the Free Software
-Foundation, either version 3 of the License, or (at your option) any later
-version. See [LICENSE](./LICENSE) for the full text.
-
-This program is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE.
+Licensed under the [MIT License](./LICENSE).

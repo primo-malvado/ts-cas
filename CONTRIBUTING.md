@@ -63,4 +63,4 @@ automatically after pushes to `master`, without a long-lived npm token.
 ## License
 
 By contributing you agree that your contributions are licensed under the
-GNU General Public License v3.0 or later, the same license as this project.
+MIT License, the same license as this project.
